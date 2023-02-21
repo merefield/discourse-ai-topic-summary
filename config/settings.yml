@@ -1,0 +1,28 @@
+plugins:
+  ai_topic_summary_enabled:
+    default: true
+    client: false
+  ai_topic_summary_open_ai_token:
+    default: ''
+    client: false
+  ai_topic_summary_open_ai_model:
+    default: 'text-davinci-001'
+    client: false
+  ai_topic_summary_max_response_tokens:
+    default: 200
+    client: false
+  ai_topic_summary_enabled_min_posts:
+    default: 5
+    client: false
+  ai_topic_summary_enabled_post_interval_rerun:
+    default: 3
+    client: false
+  ai_topic_summary_permitted_in_private_messages:
+    default: false
+    client: false
+  ai_topic_summary_permitted_all_categories:
+    default: true
+    client: false
+  ai_topic_summary_permitted_categories:
+    default: ''
+    client: false
