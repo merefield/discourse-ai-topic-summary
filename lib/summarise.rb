@@ -1,8 +1,8 @@
-class ::AITopicSummary::Summarise
+class ::AiTopicSummary::Summarise
   
   def self.return_summary(topic_id)
     raw = self.get_markdown(topic_id)
-    summary = ::AITopicSummary::CallBot.get_response(raw)
+    summary = ::AiTopicSummary::CallBot.get_response(raw)
   end
 
   def self.get_markdown(topic_id)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-module ::AITopicSummary
+module ::AiTopicSummary
   class Engine < ::Rails::Engine
     engine_name "ai_topic_summary"
-    isolate_namespace AITopicSummary
+    isolate_namespace AiTopicSummary
   end
 end

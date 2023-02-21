@@ -6,7 +6,7 @@ plugins:
     default: ''
     client: false
   ai_topic_summary_open_ai_model:
-    default: 'text-davinci-001'
+    default: 'text-davinci-003'
     client: false
   ai_topic_summary_max_response_tokens:
     default: 200
@@ -24,5 +24,11 @@ plugins:
     default: true
     client: false
   ai_topic_summary_permitted_categories:
-    default: ''
     client: false
+    default: ''
+    type: category_list
+    list_type: "compact"
+  ai_topic_summary_downvote_refresh_threshold:
+    client: false
+    default: 1
+

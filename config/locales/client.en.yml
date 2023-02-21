@@ -2,3 +2,4 @@ en:
   js:
     ai_topic_summary:
       heading: "AI Topic Summary: "
+      downvote: "Downvote if you think the summary is poor"
