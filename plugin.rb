@@ -1,5 +1,5 @@
 # name: discourse-ai-topic-summary
-# about: Uses a remote AI language model to prepare and post a summary of a Topic
+# about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
 # version: 0.0.1
 # authors: Robert Barrow
 # contact_emails: merefield@gmail.com
