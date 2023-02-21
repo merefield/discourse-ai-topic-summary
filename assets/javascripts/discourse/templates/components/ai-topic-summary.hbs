@@ -1,8 +1,16 @@
 {{#if @text}}
 {{#if @currentUser}}
 <div class="ai-summary-box">
-  <span class="ai-summary-title">{{i18n "ai_topic_summary.heading"}}</span><span class="ai-summary">{{this.args.text}}</span>
-  <DButton class="ai-summary-downvote" @icon="thumbs-down" @title="ai_topic_summary.downvote" @disabled={{this.voted}} @action={{action this.downVote}}/><span class="ai-summary-downvote-count">{{this.localDownVotes}}</span>
+  <span class="ai-summary-title">{{i18n
+      "ai_topic_summary.heading"
+    }}</span><span class="ai-summary">{{this.args.text}}</span>
+  <DButton
+    class="ai-summary-downvote"
+    @icon="thumbs-down"
+    @title="ai_topic_summary.downvote"
+    @disabled={{this.voted}}
+    @action={{action this.downVote}}
+  /><span class="ai-summary-downvote-count">{{this.localDownVotes}}</span>
 </div>
 {{/if}}
 {{/if}}

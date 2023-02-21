@@ -17,9 +17,9 @@ export default class AiTopicSummary extends Component {
   }
 
   @action
-  downVote(){
+  downVote() {
     this.localDownVotes++;
-    this.voted=true;
+    this.voted = true;
     ajax("/ai_topic_summary/downvote", {
       type: "POST",
       data: {
@@ -31,5 +31,4 @@ export default class AiTopicSummary extends Component {
       popupAjaxError(error);
     });
   }
-
 }
