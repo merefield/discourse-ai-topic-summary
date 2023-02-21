@@ -6,7 +6,10 @@
 # url: https://github.com/merefield/discourse-ai-topic-summary
 
 gem "httparty", '0.21.0' #, {require: false}
-gem "ruby-openai", '3.3.0', {require: false}
+
+gem "ruby-openai", '3.3.0', {require: false} 
+
+register_asset 'stylesheets/common/ai_topic_summary.scss'
 
 enabled_site_setting :ai_topic_summary_enabled
 

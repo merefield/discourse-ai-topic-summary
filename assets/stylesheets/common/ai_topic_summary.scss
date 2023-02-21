@@ -1,0 +1,13 @@
+.topic-area {
+  .topic-above-posts-outlet {
+    background-color: var(--secondary-very-high);
+    padding: 5px;
+    border-radius: 5px;
+  }
+  span.ai-summary-title {
+    font-weight: bold;
+  }
+  span.ai-summary {
+    font-weight: normal;
+  }
+}

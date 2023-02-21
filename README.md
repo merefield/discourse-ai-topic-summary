@@ -1,0 +1,1 @@
+#discourse-ai-topic-summary Uses a remote AI language model to prepare and post a summary of a Topic
