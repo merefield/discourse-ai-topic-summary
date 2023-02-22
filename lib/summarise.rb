@@ -6,14 +6,15 @@ class ::AiTopicSummary::Summarise
   end
 
   def self.get_markdown(topic_id)
-    # opts = params.slice(:page)
-    # opts[:limit] = MARKDOWN_TOPIC_PAGE_SIZE
+    # original markdown, experiment!
+    # #{p.user.username} | #{p.updated_at} | ##{p.post_number}
+    # -------------------------
     topic_view = TopicView.new(topic_id)
     content = topic_view.posts.map { |p| <<~MD }
-        #{p.user.username} | #{p.updated_at} | ##{p.post_number}
+        #{p.user.username}
         #{p.raw}
-        -------------------------
+        --
       MD
-    content.join
+    content.join[0..SiteSetting.ai_topic_summary_character_limit]
   end
 end

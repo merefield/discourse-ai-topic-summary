@@ -11,6 +11,9 @@ plugins:
   ai_topic_summary_max_response_tokens:
     default: 200
     client: false
+  ai_topic_summary_character_limit:
+    default: 20000
+    client: false
   ai_topic_summary_enabled_min_posts:
     default: 5
     client: false
