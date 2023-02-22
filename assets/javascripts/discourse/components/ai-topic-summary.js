@@ -12,8 +12,8 @@ export default class AiTopicSummary extends Component {
 
   constructor() {
     super(...arguments);
-    this.localDownVotes = this.args.downVotes ? this.args.downVotes.length || 0 : 0;
-    this.voted = this.args.downVotes.includes(this.args.currentUser.id)
+    this.localDownVotes = typeof(this.args.downVotes) !== 'undefined'? this.args.downVotes.length || 0 : 0;
+    this.voted = typeof(this.args.downVotes) !== 'undefined'? this.args.downVotes.includes(this.args.currentUser.id) : false;
   }
 
   get show() {
