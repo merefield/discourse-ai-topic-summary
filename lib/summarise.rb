@@ -15,6 +15,7 @@ class ::AiTopicSummary::Summarise
         #{p.raw}
         --
       MD
-    content.join[0..SiteSetting.ai_topic_summary_character_limit]
+    result = content.join[0..SiteSetting.ai_topic_summary_character_limit]
+    result[0...result.rindex(' ')] << "."
   end
 end
