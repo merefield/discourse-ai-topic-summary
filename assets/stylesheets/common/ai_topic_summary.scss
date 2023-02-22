@@ -1,13 +1,28 @@
 .topic-area {
   .ai-summary-box {
+    display: grid;
+    grid-template-areas: "title button"
+                          "summary summary";
     background-color: var(--secondary-very-high);
     padding: 5px;
     border-radius: 5px;
   }
   span.ai-summary-title {
+    grid-area: title;
     font-weight: bold;
   }
   span.ai-summary {
+    grid-area: summary;
     font-weight: normal;
   }
+  .ai-summary-downvote {
+    justify-self: end;
+    grid-area: button;
+    display: flex;
+
+    .ai-summary-downvote-count {
+      align-self: center;
+    }
+  }
+
 }
