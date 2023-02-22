@@ -12,7 +12,7 @@ plugins:
     default: 200
     client: false
   ai_topic_summary_character_limit:
-    default: 20000
+    default: 15000
     client: false
   ai_topic_summary_enabled_min_posts:
     default: 5
