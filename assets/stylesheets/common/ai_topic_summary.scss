@@ -4,11 +4,12 @@
     grid-template-areas: "title button"
                           "summary summary";
     background-color: var(--secondary-very-high);
-    padding: 5px;
+    padding: 0 5px 5px 5px;
     border-radius: 5px;
   }
   span.ai-summary-title {
     grid-area: title;
+    align-self: center;
     font-weight: bold;
   }
   span.ai-summary {
@@ -24,5 +25,4 @@
       align-self: center;
     }
   }
-
 }
