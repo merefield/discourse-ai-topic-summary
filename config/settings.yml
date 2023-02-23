@@ -14,6 +14,9 @@ plugins:
   ai_topic_summary_character_limit:
     default: 15000
     client: false
+  ai_topic_summary_post_limit:
+    default: 40
+    client: false
   ai_topic_summary_enabled_min_posts:
     default: 5
     client: false

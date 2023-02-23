@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ::AiTopicSummary::Summarise
   
   def self.return_summary(topic_id)
@@ -16,6 +17,6 @@ class ::AiTopicSummary::Summarise
         --
       MD
     result = content.join[0..SiteSetting.ai_topic_summary_character_limit]
-    result[0...result.rindex(' ')] << "."
+    result[0...result.rindex('.')] << "."
   end
 end

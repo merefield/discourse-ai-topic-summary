@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # name: discourse-ai-topic-summary
 # about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
 # version: 0.0.1
@@ -35,20 +36,27 @@ after_initialize do
     post, opts, user = params
 
     if SiteSetting.ai_topic_summary_enabled
-      permitted_categories = SiteSetting.ai_topic_summary_permitted_categories.split('|')
+      posts_count = post.topic.posts_count
+
+      return if posts_count <= SiteSetting.ai_topic_summary_enabled_min_posts || posts_count > SiteSetting.ai_topic_summary_post_limit
+
       is_private_msg = post.topic.private_message?
 
-      if SiteSetting.ai_topic_summary_permitted_in_private_messages || !is_private_msg && SiteSetting.ai_topic_summary_permitted_all_categories || (permitted_categories.include? post.topic.category_id.to_s)
-         if post.topic.posts_count > SiteSetting.ai_topic_summary_enabled_min_posts
-            if post.topic.ai_summary.nil? ||
-              (!post.topic.ai_summary.nil? && !post.topic.ai_summary["post_count"].nil? && post.topic.posts_count >= post.topic.ai_summary["post_count"] + SiteSetting.ai_topic_summary_enabled_post_interval_rerun) ||
-              post.topic.ai_summary["downvoted"].length > SiteSetting.ai_topic_summary_downvote_refresh_threshold
-              summary_text = ::AiTopicSummary::Summarise.return_summary(post.topic.id)
-              current_topic = Topic.find(post.topic.id)
-              current_topic.custom_fields["ai_summary"] = {"text": summary_text, "post_count": post.topic.posts_count, "downvoted": []}
-              current_topic.save!
-            end
-         end
+      return if !SiteSetting.ai_topic_summary_permitted_in_private_messages && is_private_msg
+
+      permitted_categories = SiteSetting.ai_topic_summary_permitted_categories.split('|')
+
+      return if !SiteSetting.ai_topic_summary_permitted_all_categories && !permitted_categories.include?(post.topic.category_id.to_s)
+
+      if post.topic.ai_summary.nil? ||
+        (!post.topic.ai_summary.nil? &&
+         !post.topic.ai_summary["post_count"].nil? &&
+          posts_count >= post.topic.ai_summary["post_count"] + SiteSetting.ai_topic_summary_enabled_post_interval_rerun) ||
+          post.topic.ai_summary["downvoted"].length > SiteSetting.ai_topic_summary_downvote_refresh_threshold
+        summary_text = ::AiTopicSummary::Summarise.return_summary(post.topic.id)
+        current_topic = Topic.find(post.topic.id)
+        current_topic.custom_fields["ai_summary"] = {"text": summary_text, "post_count": post.topic.posts_count, "downvoted": []}
+        current_topic.save!
       end
     end
   end
