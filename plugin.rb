@@ -38,7 +38,7 @@ after_initialize do
     if SiteSetting.ai_topic_summary_enabled
       posts_count = post.topic.posts_count
 
-      return if posts_count <= SiteSetting.ai_topic_summary_enabled_min_posts || posts_count > SiteSetting.ai_topic_summary_post_limit
+      return if posts_count <= SiteSetting.ai_topic_summary_enabled_min_posts
 
       is_private_msg = post.topic.private_message?
 
@@ -51,7 +51,8 @@ after_initialize do
       if post.topic.ai_summary.nil? ||
         (!post.topic.ai_summary.nil? &&
          !post.topic.ai_summary["post_count"].nil? &&
-          posts_count >= post.topic.ai_summary["post_count"] + SiteSetting.ai_topic_summary_enabled_post_interval_rerun) ||
+          posts_count >= post.topic.ai_summary["post_count"] + SiteSetting.ai_topic_summary_enabled_post_interval_rerun &&
+          posts_count <= SiteSetting.ai_topic_summary_post_limit) ||
           post.topic.ai_summary["downvoted"].length > SiteSetting.ai_topic_summary_downvote_refresh_threshold
         summary_text = ::AiTopicSummary::Summarise.return_summary(post.topic.id)
         current_topic = Topic.find(post.topic.id)
