@@ -12,4 +12,4 @@ en:
     ai_topic_summary_permitted_in_private_messages: 'Whether this is permitted in private message'
     ai_topic_summary_permitted_all_categories: 'Are all Categories supported?'
     ai_topic_summary_permitted_categories: 'Which Categories are supported?'
-    ai_topic_summary_downvote_refresh_threshold: 'Number of downvotes beyond which a new summary is requested on next Post'
+    ai_topic_summary_downvote_refresh_threshold: 'Number of downvotes beyond which a new summary is requested on next Post.  Therefore, set to zero for no downvote tolerance'
