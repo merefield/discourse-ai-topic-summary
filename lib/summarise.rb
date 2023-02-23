@@ -10,7 +10,8 @@ class ::AiTopicSummary::Summarise
     # original markdown, experiment!
     # #{p.user.username} | #{p.updated_at} | ##{p.post_number}
     # -------------------------
-    topic_view = TopicView.new(topic_id)
+    system_user = User.find(-1)
+    topic_view = TopicView.new(topic_id, system_user)
     content = topic_view.posts.map { |p| <<~MD }
         #{p.user.username}
         #{p.raw}
