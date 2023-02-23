@@ -36,24 +36,27 @@ after_initialize do
     post, opts, user = params
 
     if SiteSetting.ai_topic_summary_enabled
+      skip = false
+
       posts_count = post.topic.posts_count
 
-      return if posts_count <= SiteSetting.ai_topic_summary_enabled_min_posts
+      skip = true if posts_count <= SiteSetting.ai_topic_summary_enabled_min_posts 
 
       is_private_msg = post.topic.private_message?
 
-      return if !SiteSetting.ai_topic_summary_permitted_in_private_messages && is_private_msg
+      skip = true if !SiteSetting.ai_topic_summary_permitted_in_private_messages && is_private_msg
 
       permitted_categories = SiteSetting.ai_topic_summary_permitted_categories.split('|')
 
-      return if !SiteSetting.ai_topic_summary_permitted_all_categories && !permitted_categories.include?(post.topic.category_id.to_s)
+      skip = true if !SiteSetting.ai_topic_summary_permitted_all_categories && !permitted_categories.include?(post.topic.category_id.to_s)
 
-      if post.topic.ai_summary.nil? ||
+      if !skip &&
+        (post.topic.ai_summary.nil? ||
         (!post.topic.ai_summary.nil? &&
          !post.topic.ai_summary["post_count"].nil? &&
           posts_count >= post.topic.ai_summary["post_count"] + SiteSetting.ai_topic_summary_enabled_post_interval_rerun &&
           posts_count <= SiteSetting.ai_topic_summary_post_limit) ||
-          post.topic.ai_summary["downvoted"].length > SiteSetting.ai_topic_summary_downvote_refresh_threshold
+          post.topic.ai_summary["downvoted"].length > SiteSetting.ai_topic_summary_downvote_refresh_threshold)
         summary_text = ::AiTopicSummary::Summarise.return_summary(post.topic.id)
         current_topic = Topic.find(post.topic.id)
         current_topic.custom_fields["ai_summary"] = {"text": summary_text, "post_count": post.topic.posts_count, "downvoted": []}
