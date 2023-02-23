@@ -3,6 +3,7 @@ en:
     ai_topic_summary_enabled: 'Enable AI topic summaries'
     ai_topic_summary_open_ai_token: 'Your Open AI token'
     ai_topic_summary_open_ai_model: 'The model to be accessed'
+    ai_topic_summary_model_prompt: 'The text sent in front of the Topic contents to prompt the language model that you would like a summary'
     ai_topic_summary_max_response_tokens: 'Number of tokens requested in response (the more the more expensive it gets)'
     ai_topic_summary_character_limit: 'Number of characters sent to Language Model.  This is defaulted to approximately the OpenAI token limit, be careful! It currently means you cant send very long Topics'
     ai_topic_summary_post_limit: 'Number of Posts included.  This is defaulted to an estimated level of content which would fit approximately within the OpenAI token limit.'

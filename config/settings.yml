@@ -8,6 +8,9 @@ plugins:
   ai_topic_summary_open_ai_model:
     default: 'text-davinci-003'
     client: false
+  ai_topic_summary_model_prompt:
+    default: 'Please summarise the following text in maximum three sentences:'
+    client: false
   ai_topic_summary_max_response_tokens:
     default: 200
     client: false

@@ -24,7 +24,7 @@ class ::AiTopicSummary::CallBot
     response = client.completions(
       parameters: {
           model: SiteSetting.ai_topic_summary_open_ai_model,
-          prompt: "Please summarise the following text in maximum 3 sentences: '#{full_raw}'",
+          prompt: "#{SiteSetting.ai_topic_summary_model_prompt} '#{full_raw}'",
           max_tokens: SiteSetting.ai_topic_summary_max_response_tokens
       })
 
