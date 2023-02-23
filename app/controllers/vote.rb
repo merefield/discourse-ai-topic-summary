@@ -11,13 +11,16 @@ class AiTopicSummary::VoteController < ApplicationController
     raise Discourse::InvalidParameters.new if current_user.username != params[:username]
 
     if (user = User.find_by(username: params[:username])) && (topic = Topic.find(params[:topic_id]))
-      if (!topic.custom_fields["ai_summary"]["downvoted"].present?) || (!topic.custom_fields["ai_summary"]["downvoted"].include? user.id)
-        if topic.custom_fields["ai_summary"]["downvoted"].present?
-          downvoted_array = topic.custom_fields["ai_summary"]["downvoted"]
-        else 
+      downvoted_array = topic.custom_fields["ai_summary"]["downvoted"]
+
+      if !downvoted_array.include? user.id
+        downvoted_array.push(user.id)
+
+        if topic.custom_fields["ai_summary"]["downvoted"].length > SiteSetting.ai_topic_summary_downvote_refresh_threshold
+          ::AiTopicSummary::Summarise.retrieve_summary(topic.id)
           downvoted_array = []
         end
-        downvoted_array.push(user.id)
+
         topic.custom_fields["ai_summary"]["downvoted"] = downvoted_array
         topic.save!
       end

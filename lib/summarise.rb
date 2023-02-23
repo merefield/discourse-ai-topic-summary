@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 class ::AiTopicSummary::Summarise
   
-  def self.return_summary(topic_id)
+  def self.retrieve_summary(topic_id)
     raw = self.get_markdown(topic_id)
     summary = ::AiTopicSummary::CallBot.get_response(raw)
+    current_topic = Topic.find(topic_id)
+    current_topic.custom_fields["ai_summary"] = {"text": summary, "post_count":current_topic.posts_count, "downvoted": []}
+    current_topic.save!
   end
 
   def self.get_markdown(topic_id)

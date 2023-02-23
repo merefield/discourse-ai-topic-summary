@@ -1,14 +1,16 @@
 .topic-area {
   .ai-summary-box {
     display: grid;
-    grid-template-areas: "title button"
-                          "summary summary";
+    // grid-template-columns: 1f;
+    grid-template-areas: "title title title button"
+                          "summary summary summary summary";
     background-color: var(--secondary-very-high);
     padding: 0 5px 5px 5px;
     border-radius: 5px;
   }
   span.ai-summary-title {
     grid-area: title;
+    // grid-column: span 3;
     align-self: center;
     font-weight: bold;
   }
