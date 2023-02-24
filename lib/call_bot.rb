@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 require "openai"
 
-class OpenAICallError < StandardError
-  attr_reader :foo
-
-  def initialize(foo)
-   super
-   @foo = foo
-  end
-end
-
 class ::AiTopicSummary::CallBot
   # see https://github.com/alexrudall/ruby-openai
   def self.get_response(full_raw)
