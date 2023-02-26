@@ -1,9 +1,9 @@
 .topic-area {
   .ai-summary-box {
     display: grid;
-    // grid-template-columns: 1f;
-    grid-template-areas: "title title title button"
-                          "summary summary summary summary";
+    grid-template-areas: "title button"
+                          "summary summary";
+    grid-template-columns: auto 40px;
     background-color: var(--secondary-very-high);
     padding: 0 5px 5px 5px;
     border-radius: 5px;
