@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 # name: discourse-ai-topic-summary
 # about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
-# version: 0.0.1
+# version: 0.0.2
 # authors: Robert Barrow
 # contact_emails: merefield@gmail.com
 # url: https://github.com/merefield/discourse-ai-topic-summary
 
 gem "httparty", '0.21.0' #, {require: false}
-gem "ruby-openai", '3.3.0', {require: false} 
+gem "ruby-openai", '3.4.0', {require: false} 
 
 register_asset 'stylesheets/common/ai_topic_summary.scss'
 
