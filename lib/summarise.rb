@@ -10,17 +10,16 @@ class ::AiTopicSummary::Summarise
   end
 
   def self.get_markdown(topic_id)
-    # original markdown, experiment!
-    # #{p.user.username} | #{p.updated_at} | ##{p.post_number}
-    # -------------------------
     system_user = User.find(-1)
     topic_view = TopicView.new(topic_id, system_user)
-    content = topic_view.posts.map { |p| <<~MD }
-        #{p.user.username}
-        #{p.raw}
-        --
-      MD
-    result = content.join[0..SiteSetting.ai_topic_summary_character_limit]
+    content = []
+    topic_view.posts.each_with_index do |p, index|
+      next if p.post_type > 1
+      break if index > SiteSetting.ai_topic_summary_post_limit
+      content << I18n.t("ai_topic_summary.prompt.post", username: p.user.username, raw: p.raw)
+    end
+    result = content.join
+    result = result[0..SiteSetting.ai_topic_summary_character_limit]
     result[0...result.rindex('.')] << "."
   end
 end
