@@ -15,7 +15,7 @@ class ::AiTopicSummary::CallBot
     response = client.completions(
       parameters: {
           model: SiteSetting.ai_topic_summary_open_ai_model,
-          prompt: "#{SiteSetting.ai_topic_summary_model_prompt} '#{full_raw}'",
+          prompt: I18n.t("ai_topic_summary.prompt.summarise", full_raw: full_raw),
           max_tokens: SiteSetting.ai_topic_summary_max_response_tokens
       })
 
