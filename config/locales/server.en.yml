@@ -13,3 +13,4 @@ en:
     ai_topic_summary_permitted_all_categories: 'Are all Categories supported?'
     ai_topic_summary_permitted_categories: 'Which Categories are supported?'
     ai_topic_summary_downvote_refresh_threshold: 'Number of downvotes beyond which a new summary is requested.  Therefore, set to zero for no downvote tolerance'
+    ai_topic_summary_rely_on_layouts_widget_instead: 'Turn off summary at top of Topic and use Layouts Widget instead (requires installing and configuring Layouts plugin)'
