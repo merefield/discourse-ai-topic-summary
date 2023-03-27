@@ -5,10 +5,7 @@ class ::AiTopicSummary::CallBot
   # see https://github.com/alexrudall/ruby-openai
   def self.get_response(full_raw)
 
-    # TODO add this in when support added via PR after "ruby-openai", '3.3.0'
-    # OpenAI.configure do |config|
-    #   config.request_timeout = 25
-    # end
+    # TODO consider moving this to a job which retries on failure, current timeout at time of comment is 120 seconds, though
 
     client = OpenAI::Client.new(access_token: SiteSetting.ai_topic_summary_open_ai_token)
 

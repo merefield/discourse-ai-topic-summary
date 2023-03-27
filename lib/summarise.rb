@@ -16,7 +16,9 @@ class ::AiTopicSummary::Summarise
     topic_view.posts.each_with_index do |p, index|
       next if p.post_type > 1
       break if index > SiteSetting.ai_topic_summary_post_limit
-      content << I18n.t("ai_topic_summary.prompt.post", username: p.user.username, raw: p.raw)
+      raw_post_contents = p.raw
+      raw_post_contents.gsub!(/\[quote.*?\](.*?)\[\/quote\]/m,'') if SiteSetting.ai_topic_summary_strip_quotes
+      content << I18n.t("ai_topic_summary.prompt.post", username: p.user.username, raw: raw_post_contents)
     end
     result = content.join
     result = result[0..SiteSetting.ai_topic_summary_character_limit]
