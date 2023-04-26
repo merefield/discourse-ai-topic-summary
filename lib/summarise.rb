@@ -7,6 +7,13 @@ class ::AiTopicSummary::Summarise
     current_topic = Topic.find(topic_id)
     current_topic.custom_fields["ai_summary"] = {"text": summary, "post_count":current_topic.posts_count, "downvoted": []}
     current_topic.save!
+    if SiteSetting.ai_topic_summary_enable_auto_tagging
+      tags_string = "['" + Tag.pluck(:name).join("', '") + "']"
+      query = I18n.t("ai_topic_summary.prompt.tag", tags: tags_string, summary: summary)
+      tags_response = ::AiTopicSummary::CallBot.get_response(query)
+      tag_name_list = tags_response.split(",")
+      DiscourseTagging.tag_topic_by_names(current_topic, Guardian.new(Discourse.system_user), tag_name_list)
+    end
   end
 
   def self.get_markdown(topic_id)
