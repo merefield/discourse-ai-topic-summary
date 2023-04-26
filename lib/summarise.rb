@@ -3,16 +3,35 @@ class ::AiTopicSummary::Summarise
   
   def self.retrieve_summary(topic_id)
     raw = self.get_markdown(topic_id)
-    summary = ::AiTopicSummary::CallBot.get_response(raw)
+    summary = ::AiTopicSummary::CallBot.get_response(raw).strip
+    # pp summary
+    # pp '-----------================----------------'
     current_topic = Topic.find(topic_id)
     current_topic.custom_fields["ai_summary"] = {"text": summary, "post_count":current_topic.posts_count, "downvoted": []}
     current_topic.save!
     if SiteSetting.ai_topic_summary_enable_auto_tagging
       tags_string = "['" + Tag.pluck(:name).join("', '") + "']"
       query = I18n.t("ai_topic_summary.prompt.tag", tags: tags_string, summary: summary)
-      tags_response = ::AiTopicSummary::CallBot.get_response(query)
+      # pp query
+      tags_response = ::AiTopicSummary::CallBot.get_response(query).strip.chomp('.')
+      # pp '-----------================----------------'
+      # pp tags_response
       tag_name_list = tags_response.split(",")
-      DiscourseTagging.tag_topic_by_names(current_topic, Guardian.new(Discourse.system_user), tag_name_list)
+      if SiteSetting.force_lowercase_tags
+        tag_name_list = tag_name_list.map { |string| string.downcase }
+      end
+      tag_name_list = tag_name_list.map { |string| string.strip.gsub(/[ .]/, "-") }
+      # pp '-----------================----------------'
+      # pp tag_name_list
+      # pp '-----------================----------------'
+      if SiteSetting.ai_topic_summary_auto_tagging_username.blank?
+        DiscourseTagging.tag_topic_by_names(current_topic, Guardian.new(Discourse.system_user), tag_name_list)
+      else
+        tagging_user = User.find_by(username: SiteSetting.ai_topic_summary_auto_tagging_username)
+        if tagging_user
+          DiscourseTagging.tag_topic_by_names(current_topic, Guardian.new(tagging_user), tag_name_list)
+        end
+      end
     end
   end
 
