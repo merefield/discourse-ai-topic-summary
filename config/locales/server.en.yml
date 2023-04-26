@@ -14,7 +14,9 @@ en:
     ai_topic_summary_permitted_categories: 'Which Categories are supported?'
     ai_topic_summary_downvote_refresh_threshold: 'Number of downvotes beyond which a new summary is requested.  Therefore, set to zero for no downvote tolerance'
     ai_topic_summary_rely_on_layouts_widget_instead: 'Turn off summary at top of Topic and use Layouts Widget instead (requires installing and configuring Layouts plugin)'
+    ai_topic_summary_enable_auto_tagging: 'Enable automated tagging of topics based on your existing available tags (NB Experimental!  It will replace not append)'
   ai_topic_summary:
     prompt:
       post: "%{username} said %{raw}\n---\n"
       summarise: "Please summarise the following text in a maximum of three sentences: '%{full_raw}'"
+      tag: "Given this set of tags %{tags} recommend up to five of them that are most appropriate for this summary?: '%{summary}'.  List just the tags, separated by commas."
