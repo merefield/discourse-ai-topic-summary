@@ -3,25 +3,61 @@ require "openai"
 
 class ::AiTopicSummary::CallBot
   # see https://github.com/alexrudall/ruby-openai
-  def self.get_response(full_raw)
-
-    # TODO consider moving this to a job which retries on failure, current timeout at time of comment is 120 seconds, though
+  def self.get_response(prompt)
+    #raise StandardError, I18n.t('ai_topic_summary.error.no_custom_model_name') if SiteSetting.chatbot_open_ai_model_custom && SiteSetting.chatbot_open_ai_model_custom_name.blank?
 
     client = OpenAI::Client.new(access_token: SiteSetting.ai_topic_summary_open_ai_token)
 
-    response = client.completions(
-      parameters: {
-          model: SiteSetting.ai_topic_summary_open_ai_model,
-          prompt: I18n.t("ai_topic_summary.prompt.summarise", full_raw: full_raw),
-          max_tokens: SiteSetting.ai_topic_summary_max_response_tokens
-      })
+    model_name = SiteSetting.ai_topic_summary_open_ai_model_custom ? SiteSetting.ai_topic_summary_open_ai_model_custom_name : SiteSetting.ai_topic_summary_open_ai_model
 
-    if response.parsed_response["error"]
-      raise StandardError, response.parsed_response["error"]["message"]
+    if ["gpt-3.5-turbo", "gpt-4"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
+      (SiteSetting.ai_topic_summary_open_ai_model_custom == true && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat")
+
+      response = client.chat(
+        parameters: {
+            model: model_name,
+            messages: prompt,
+            max_tokens: SiteSetting.ai_topic_summary_request_max_response_tokens,
+            temperature: SiteSetting.ai_topic_summary_request_temperature / 100.0,
+            top_p: SiteSetting.ai_topic_summary_request_top_p / 100.0,
+            frequency_penalty: SiteSetting.ai_topic_summary_request_frequency_penalty / 100.0,
+            presence_penalty: SiteSetting.ai_topic_summary_request_presence_penalty / 100.0
+        })
+
+      if response.parsed_response["error"]
+        begin
+          raise StandardError, response.parsed_response["error"]["message"]
+        rescue => e
+          Rails.logger.error ("AI Topic Summary: There was a problem: #{e}")
+          I18n.t('ai_topic_summary.errors.general')
+        end
+      else
+        response.dig("choices", 0, "message", "content")
+      end
+    elsif (SiteSetting.ai_topic_summary_open_ai_model_custom == true && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "completions") ||
+      ["text-davinci-003", "text-davinci-002"].include?(SiteSetting.ai_topic_summary_open_ai_model)
+
+      response = client.completions(
+        parameters: {
+            model: model_name,
+            prompt: prompt,
+            max_tokens: SiteSetting.ai_topic_summary_request_max_response_tokens,
+            temperature: SiteSetting.ai_topic_summary_request_temperature / 100.0,
+            top_p: SiteSetting.ai_topic_summary_request_top_p / 100.0,
+            frequency_penalty: SiteSetting.ai_topic_summary_request_frequency_penalty / 100.0,
+            presence_penalty: SiteSetting.ai_topic_summary_request_presence_penalty / 100.0
+        })
+
+      if response.parsed_response["error"]
+        begin
+          raise StandardError, response.parsed_response["error"]["message"]
+        rescue => e
+          Rails.logger.error ("AI Topic Summary: There was a problem: #{e}")
+          I18n.t('ai_topic_summary.errors.general')
+        end
+      else
+        response["choices"][0]["text"]
+      end
     end
-
-    final_text = response["choices"][0]["text"]
-
-    final_text
   end
 end
