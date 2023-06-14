@@ -2,8 +2,15 @@ en:
   site_settings:
     ai_topic_summary_enabled: 'Enable AI topic summaries'
     ai_topic_summary_open_ai_token: "Your Open AI token.  You can get one at <a target='_blank' rel='noopener' href='https://platform.openai.com/account/api-keys/'>openai.com</a>"
-    ai_topic_summary_open_ai_model: "The model to be accessed.  Models are detailed at <a target='_blank' rel='noopener' href='https://platform.openai.com/docs/models/overview'>models overview on openai.com</a>"
-    ai_topic_summary_max_response_tokens: 'Number of tokens requested in response (the more the more expensive it gets)'
+    ai_topic_summary_open_ai_model_custom: "Use Custom model name (ADVANCED USERS ONLY)"
+    ai_topic_summary_open_ai_model_custom_name: "(CUSTOM ONLY) Name of model"
+    ai_topic_summary_open_ai_model_custom_type: "(CUSTOM ONLY) IMPORTANT: Select which type of Open AI endpoint should be used, Chat (ChatGPT style), or Completion (Davinci style) - will break if you select wrong type"
+    ai_topic_summary_open_ai_model: "(UNLESS CUSTOM) The model to be accessed.  Models are detailed at <a target='_blank' rel='noopener' href='https://platform.openai.com/docs/models/overview'>models overview on openai.com</a>"
+    ai_topic_summary_request_max_response_tokens:  "Specify the maximum amount of tokens bot will use to generate a response. Refer to: <a target='_blank' rel='noopener' href='https://openai.com/pricing'>OpenAI: Pricing</a>"
+    ai_topic_summary_request_temperature: "Numeric value within the range of 0 to 100 to determine the level of randomization for AI responses. Higher temp = more creative, lower temp = more conservative. Refer to: <a target='_blank' rel='noopener' href='https://platform.openai.com/docs/api-reference/completions/create#completions/create-temperature/'>API docs: temperature</a>"
+    ai_topic_summary_request_top_p: "Numeric value within the range of 0 to 100. Refer to: <a target='_blank' rel='noopener' href='https://platform.openai.com/docs/api-reference/completions/create#completions/create-top_p'>API docs: top_p</a>"
+    ai_topic_summary_request_frequency_penalty: "Numeric value within the range of -200 to 200. Refer to: <a target='_blank' rel='noopener' href='https://platform.openai.com/docs/api-reference/completions/create#completions/create-frequency_penalty'>API docs: frequency_penalty</a>"
+    ai_topic_summary_request_presence_penalty: "Numeric value within the range of -200 to 200. Refer to: <a target='_blank' rel='noopener' href='https://platform.openai.com/docs/api-reference/completions/create#completions/create-presence_penalty'>API docs: presence_penalty</a>"
     ai_topic_summary_character_limit: 'Number of characters sent to Language Model.  This is defaulted to approximately the OpenAI token limit, be careful! It currently means you cant send very long Topics'
     ai_topic_summary_post_limit: 'Number of Posts included.  This is defaulted to an estimated level of content which would fit approximately within the OpenAI token limit.'
     ai_topic_summary_strip_quotes: 'Strip quotes from Posts before processing (otherwise you are paying for duplication)'
@@ -17,7 +24,13 @@ en:
     ai_topic_summary_enable_auto_tagging: 'EXPERIMENTAL: Enable automated tagging of topics (NB It will replace not append!)'
     ai_topic_summary_auto_tagging_username: 'EXPERIMENTAL: Username used for auto-adding tags.  System User is used if blank, which will allow the AI to create new tags.  This is rarely desirable as they can be a bit free-form occasionally. This setting can help you block creation of new tags if chosen User does not have privileges to create new tags and will restrict it to existing tags only.  Governed by Trust Level setting min_trust_to_create_tag'
   ai_topic_summary:
+    errors:
+      no_custom_model_name: "ERROR: Custom model selected but no name provided.  Please populate custom model name!"
+      general: "There was a problem, consult logs"
     prompt:
+      system: "You are a helpful assistant that likes to summarise forum topics."
+      title: "The subject of this conversation is %{topic_title}"
       post: "%{username} said %{raw}\n---\n"
       summarise: "Please summarise the following text in a maximum of three sentences: '%{full_raw}'"
+      summarise_chat: "Please summarise all the preceeding text in a maximum of three sentences"
       tag: "Given this set of tags %{tags} recommend up to five of them that are most appropriate for this summary?: '%{summary}'.  Strictly respond by only listing the tags, separated by commas."

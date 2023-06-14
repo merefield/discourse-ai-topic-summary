@@ -5,16 +5,51 @@ plugins:
   ai_topic_summary_open_ai_token:
     default: ''
     client: false
+  ai_topic_summary_open_ai_model_custom:
+    default: false
+    client: false
+  ai_topic_summary_open_ai_model_custom_name:
+    default: ''
+    client: false
+  ai_topic_summary_open_ai_model_custom_type:
+    default: 'chat'
+    client: false
+    type: enum
+    choices:
+      - chat
+      - completions
   ai_topic_summary_open_ai_model:
     client: false
     type: enum
-    default: text-davinci-003
+    default: gpt-3.5-turbo
     choices:
+      - gpt-3.5-turbo
+      - gpt-4
       - text-davinci-003
       - text-davinci-002
-  ai_topic_summary_max_response_tokens:
+  ai_topic_summary_request_max_response_tokens:
     default: 200
     client: false
+  ai_topic_summary_request_temperature:
+    client: false
+    default: 100
+    min: 0
+    max: 100
+  ai_topic_summary_request_top_p:
+    client: false
+    default: 100
+    min: 0
+    max: 100
+  ai_topic_summary_request_frequency_penalty:
+    client: false
+    default: 0
+    min: -200
+    max: 200
+  ai_topic_summary_request_presence_penalty:
+    client: false
+    default: 0
+    min: -200
+    max: 200
   ai_topic_summary_character_limit:
     default: 15000
     client: false
