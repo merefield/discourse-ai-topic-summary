@@ -4,7 +4,6 @@ require "openai"
 class ::AiTopicSummary::CallBot
   # see https://github.com/alexrudall/ruby-openai
   def self.get_response(prompt)
-    #raise StandardError, I18n.t('ai_topic_summary.error.no_custom_model_name') if SiteSetting.chatbot_open_ai_model_custom && SiteSetting.chatbot_open_ai_model_custom_name.blank?
 
     client = OpenAI::Client.new(access_token: SiteSetting.ai_topic_summary_open_ai_token)
 
@@ -24,9 +23,9 @@ class ::AiTopicSummary::CallBot
             presence_penalty: SiteSetting.ai_topic_summary_request_presence_penalty / 100.0
         })
 
-      if response.parsed_response["error"]
+      if response["error"]
         begin
-          raise StandardError, response.parsed_response["error"]["message"]
+          raise StandardError, response["error"]["message"]
         rescue => e
           Rails.logger.error ("AI Topic Summary: There was a problem: #{e}")
           I18n.t('ai_topic_summary.errors.general')
