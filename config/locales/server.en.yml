@@ -25,7 +25,6 @@ en:
     ai_topic_summary_auto_tagging_username: 'EXPERIMENTAL: Username used for auto-adding tags.  System User is used if blank, which will allow the AI to create new tags.  This is rarely desirable as they can be a bit free-form occasionally. This setting can help you block creation of new tags if chosen User does not have privileges to create new tags and will restrict it to existing tags only.  Governed by Trust Level setting min_trust_to_create_tag'
   ai_topic_summary:
     errors:
-      no_custom_model_name: "ERROR: Custom model selected but no name provided.  Please populate custom model name!"
       general: "There was a problem, consult logs"
     prompt:
       system: "You are a helpful assistant that likes to summarise forum topics."
