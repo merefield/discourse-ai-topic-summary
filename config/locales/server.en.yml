@@ -28,6 +28,7 @@ en:
       general: "There was a problem, consult logs"
     prompt:
       system: "You are a helpful assistant that likes to summarise forum topics."
+      system_tagging: "You are a helpful assistant that likes to tag forum topics."
       title: "The subject of this conversation is %{topic_title}"
       post: "%{username} said %{raw}\n---\n"
       summarise: "Please summarise the following text in a maximum of three sentences: '%{full_raw}'"

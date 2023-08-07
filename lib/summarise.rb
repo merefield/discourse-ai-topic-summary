@@ -10,24 +10,37 @@ class ::AiTopicSummary::Summarise
     current_topic.save!
 
     if SiteSetting.ai_topic_summary_enable_auto_tagging
-      tags_string = "['" + Tag.pluck(:name).join("', '") + "']"
-      query = I18n.t("ai_topic_summary.prompt.tag", tags: tags_string, summary: summary)
+      retrieve_tags(current_topic, summary)
+    end
+  end
 
-      tags_response = ::AiTopicSummary::CallBot.get_response(query).strip.chomp('.')
+  def self.retrieve_tags(current_topic, summary)
+    tags_string = "['" + Tag.pluck(:name).join("', '") + "']"
+    query = I18n.t("ai_topic_summary.prompt.tag", tags: tags_string, summary: summary)
+    messages = nil
 
-      tag_name_list = tags_response.split(",")
-      if SiteSetting.force_lowercase_tags
-        tag_name_list = tag_name_list.map { |string| string.downcase }
-      end
-      tag_name_list = tag_name_list.map { |string| string.strip.gsub(/[ .]/, "-") }
+    if ["gpt-3.5-turbo", "gpt-4"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
+      SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
+      messages = [{ "role": "system", "content": I18n.t("ai_topic_summary.prompt.system_tagging") }]
+      messages << { "role": "user", "content":  query }
+    else
+      messages = query
+    end
 
-      if SiteSetting.ai_topic_summary_auto_tagging_username.blank?
-        DiscourseTagging.tag_topic_by_names(current_topic, Guardian.new(Discourse.system_user), tag_name_list)
-      else
-        tagging_user = User.find_by(username: SiteSetting.ai_topic_summary_auto_tagging_username)
-        if tagging_user
-          DiscourseTagging.tag_topic_by_names(current_topic, Guardian.new(tagging_user), tag_name_list)
-        end
+    tags_response = ::AiTopicSummary::CallBot.get_response(messages).strip.chomp('.')
+
+    tag_name_list = tags_response.split(",")
+    if SiteSetting.force_lowercase_tags
+      tag_name_list = tag_name_list.map { |string| string.downcase }
+    end
+    tag_name_list = tag_name_list.map { |string| string.strip.gsub(/[ .]/, "-") }
+
+    if SiteSetting.ai_topic_summary_auto_tagging_username.blank?
+      DiscourseTagging.tag_topic_by_names(current_topic, Guardian.new(Discourse.system_user), tag_name_list)
+    else
+      tagging_user = User.find_by(username: SiteSetting.ai_topic_summary_auto_tagging_username)
+      if tagging_user
+        DiscourseTagging.tag_topic_by_names(current_topic, Guardian.new(tagging_user), tag_name_list)
       end
     end
   end
@@ -38,7 +51,7 @@ class ::AiTopicSummary::Summarise
     content = []
 
     if ["gpt-3.5-turbo", "gpt-4"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
-      SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_type == "chat"
+      SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
       messages = [{ "role": "system", "content": I18n.t("ai_topic_summary.prompt.system") }]
       messages << { "role": "user", "content":  I18n.t("ai_topic_summary.prompt.title", username: User.find(topic_view.topic.user_id).username, topic_title: topic_view.title) }
     end
@@ -50,7 +63,7 @@ class ::AiTopicSummary::Summarise
       raw_post_contents.gsub!(/\[quote.*?\](.*?)\[\/quote\]/m,'') if SiteSetting.ai_topic_summary_strip_quotes
 
       if SiteSetting.ai_topic_summary_open_ai_model == "gpt-3.5-turbo" ||
-        SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_type == "chat"
+        SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
         messages << { "role": "user", "content": I18n.t("ai_topic_summary.prompt.post", username: p.user.username, raw: raw_post_contents) }
       else
         content << I18n.t("ai_topic_summary.prompt.post", username: p.user.username, raw: raw_post_contents)
@@ -58,7 +71,7 @@ class ::AiTopicSummary::Summarise
     end
 
     unless ["gpt-3.5-turbo", "gpt-4"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
-      SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_type == "chat"
+      SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
       result = content.join
       result = result[0..SiteSetting.ai_topic_summary_character_limit]
       result[0...result.rindex('.')] << "."
