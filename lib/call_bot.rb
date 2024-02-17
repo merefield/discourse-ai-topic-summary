@@ -9,7 +9,7 @@ class ::AiTopicSummary::CallBot
 
     model_name = SiteSetting.ai_topic_summary_open_ai_model_custom ? SiteSetting.ai_topic_summary_open_ai_model_custom_name : SiteSetting.ai_topic_summary_open_ai_model
 
-    if ["gpt-3.5-turbo", "gpt-4"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
+    if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo-preview"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
       (SiteSetting.ai_topic_summary_open_ai_model_custom == true && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat")
 
       response = client.chat(
@@ -34,7 +34,7 @@ class ::AiTopicSummary::CallBot
         response.dig("choices", 0, "message", "content")
       end
     elsif (SiteSetting.ai_topic_summary_open_ai_model_custom == true && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "completions") ||
-      ["text-davinci-003", "text-davinci-002"].include?(SiteSetting.ai_topic_summary_open_ai_model)
+      ["gpt-3.5-turbo-instruct"].include?(SiteSetting.ai_topic_summary_open_ai_model)
 
       response = client.completions(
         parameters: {
