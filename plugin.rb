@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # name: discourse-ai-topic-summary
 # about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
-# version: 0.0.16
+# version: 0.0.17
 # authors: Robert Barrow
 # contact_emails: merefield@gmail.com
 # url: https://github.com/merefield/discourse-ai-topic-summary
@@ -30,7 +30,7 @@ after_initialize do
 
   add_to_class(:topic, :ai_summary) { self.custom_fields['ai_summary'] }
 
-  add_to_serializer(:topic_view, :ai_summary, false) { object.topic.ai_summary }
+  add_to_serializer(:topic_view, :ai_summary, respect_plugin_enabled: true ) { object.topic.ai_summary }
 
   add_preloaded_topic_list_custom_field("ai_summary")
 
