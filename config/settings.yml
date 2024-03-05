@@ -80,7 +80,7 @@ plugins:
   ai_topic_summary_downvote_refresh_threshold:
     client: false
     default: 1
-  ai_topic_summary_rely_on_layouts_widget_instead:
+  ai_topic_summary_rely_on_sidebar_widget_instead:
     client: true
     default: false
   ai_topic_summary_enable_auto_tagging:

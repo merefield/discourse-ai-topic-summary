@@ -1,11 +1,11 @@
-.topic-area, .widget-container.layouts-ai-topic-summary-widget {
+.topic-area, .component-widget .ai-topic-summary-component {
   .ai-summary-box {
     display: grid;
     grid-template-areas: "title button"
                           "summary summary";
     grid-template-columns: auto 40px;
     background-color: var(--secondary-very-high);
-    padding: 0 5px 5px 5px;
+    padding: 0 6px 6px 6px;
     border-radius: 5px;
   }
   span.ai-summary-title {
