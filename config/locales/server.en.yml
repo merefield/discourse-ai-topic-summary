@@ -20,7 +20,7 @@ en:
     ai_topic_summary_permitted_all_categories: 'Are all Categories supported?'
     ai_topic_summary_permitted_categories: 'Which Categories are supported?'
     ai_topic_summary_downvote_refresh_threshold: 'Number of downvotes beyond which a new summary is requested.  Therefore, set to zero for no downvote tolerance'
-    ai_topic_summary_rely_on_layouts_widget_instead: 'Turn off summary at top of Topic and use Layouts Widget instead (requires installing and configuring Layouts plugin)'
+    ai_topic_summary_rely_on_sidebar_widget_instead: 'Turn off summary at top of Topic and use Layouts Widget instead (requires installing and configuring Layouts plugin)'
     ai_topic_summary_enable_auto_tagging: 'EXPERIMENTAL: Enable automated tagging of topics (NB It will replace not append!)'
     ai_topic_summary_auto_tagging_username: 'EXPERIMENTAL: Username used for auto-adding tags.  System User is used if blank, which will allow the AI to create new tags.  This is rarely desirable as they can be a bit free-form occasionally. This setting can help you block creation of new tags if chosen User does not have privileges to create new tags and will restrict it to existing tags only.  Governed by Trust Level setting min_trust_to_create_tag'
   ai_topic_summary:

@@ -5,23 +5,38 @@ import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { inject as service } from "@ember/service";
 
-export default class AiTopicSummary extends Component {
+export default class AiTopicSummaryComponent extends Component {
   @service siteSettings;
+  @service currentUser;
+  @service router;
   @tracked localDownVotes;
+  @tracked downVotes;
+  @tracked text;
+  @tracked topic_id;
   @tracked voted;
 
   constructor() {
     super(...arguments);
-    this.localDownVotes = typeof(this.args.downVotes) !== 'undefined'? this.args.downVotes.length || 0 : 0;
-    if (this.args.currentUser) {
-      this.voted = typeof(this.args.downVotes) !== 'undefined'? this.args.downVotes.includes(this.args.currentUser.id) : false;
+
+    this.topic_id = this.router.currentRoute.parent.params.id;
+    const topicAiSummaryDataPath = `/ai_topic_summary/ai_summary/${this.topic_id}.json`;
+
+    ajax(topicAiSummaryDataPath).then((response) => {
+        if (response.ai_summary !== null) {
+          this.text = response.ai_summary.text;
+          this.downVotes = response.ai_summary.downvoted;
+        }
+    });
+    this.localDownVotes = typeof(this.downVotes) !== 'undefined'? this.downVotes.length || 0 : 0;
+    if (this.currentUser) {
+      this.voted = typeof(this.downVotes) !== 'undefined'? this.downVotes.includes(this.currentUser.id) : false;
     } else {
       this.voted = true;
     }
   }
 
   get show() {
-    return this.siteSettings.ai_topic_summary_enabled && this.args.text && this.args.currentUser
+    return this.siteSettings.ai_topic_summary_enabled && this.text && this.currentUser
   }
 
   @action
@@ -31,8 +46,8 @@ export default class AiTopicSummary extends Component {
     ajax("/ai_topic_summary/downvote", {
       type: "POST",
       data: {
-        username: this.args.currentUser.username,
-        topic_id: this.args.topic_id,
+        username: this.currentUser.username,
+        topic_id: this.topic_id,
       },
       returnXHR: true,
     }).catch(function (error) {
