@@ -19,7 +19,7 @@ class ::AiTopicSummary::Summarise
     query = I18n.t("ai_topic_summary.prompt.tag", tags: tags_string, summary: summary)
     messages = nil
 
-    if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo-preview"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
+    if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo", "gpt-4o"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
       SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
       messages = [{ "role": "system", "content": I18n.t("ai_topic_summary.prompt.system_tagging") }]
       messages << { "role": "user", "content":  query }
@@ -50,7 +50,7 @@ class ::AiTopicSummary::Summarise
     topic_view = TopicView.new(topic_id, system_user)
     content = []
 
-    if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo-preview"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
+    if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo", "gpt-4o"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
       SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
       messages = [{ "role": "system", "content": I18n.t("ai_topic_summary.prompt.system") }]
       messages << { "role": "user", "content":  I18n.t("ai_topic_summary.prompt.title", username: User.find(topic_view.topic.user_id).username, topic_title: topic_view.title) }
@@ -62,7 +62,7 @@ class ::AiTopicSummary::Summarise
       raw_post_contents = p.raw
       raw_post_contents.gsub!(/\[quote.*?\](.*?)\[\/quote\]/m,'') if SiteSetting.ai_topic_summary_strip_quotes
 
-      if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo-preview"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
+      if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo", "gpt-4o"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
         SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
         messages << { "role": "user", "content": I18n.t("ai_topic_summary.prompt.post", username: p.user.username, raw: raw_post_contents) }
       else
@@ -70,7 +70,7 @@ class ::AiTopicSummary::Summarise
       end
     end
 
-    unless ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo-preview"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
+    unless ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo", "gpt-4o"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
       SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
       result = content.join
       result = result[0..SiteSetting.ai_topic_summary_character_limit]
