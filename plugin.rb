@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # name: discourse-ai-topic-summary
 # about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
-# version: 0.2.1
+# version: 0.2.2
 # authors: Robert Barrow
 # contact_emails: merefield@gmail.com
 # url: https://github.com/merefield/discourse-ai-topic-summary
