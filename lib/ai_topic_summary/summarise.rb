@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class ::AiTopicSummary::Summarise
   
-  def self.retrieve_summary(topic_id)
+  def self.retrieve_and_post_summary(topic_id)
     data = self.get_markdown(topic_id)
     summary = ::AiTopicSummary::CallBot.get_response(data).strip
 
