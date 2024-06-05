@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # name: discourse-ai-topic-summary
 # about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
-# version: 0.2.2
+# version: 0.3.0
 # authors: Robert Barrow
 # contact_emails: merefield@gmail.com
 # url: https://github.com/merefield/discourse-ai-topic-summary
@@ -15,14 +15,30 @@ register_asset 'stylesheets/common/ai_topic_summary.scss'
 
 enabled_site_setting :ai_topic_summary_enabled
 
+module ::AiTopicSummary
+
+  def progress_debug_message(message)
+    puts "AI Topic Summary: #{message}" if SiteSetting.ai_topic_summary_verbose_console_logging
+    Rails.logger.info("AI Topic Summary: #{message}") if SiteSetting.ai_topic_summary_verbose_rails_logging
+  end
+
+  module_function :progress_debug_message
+end
+
 after_initialize do
   %w[
   ../lib/ai_topic_summary/engine.rb
   ../lib/ai_topic_summary/call_bot.rb
+  ../app/models/ai_topic_summary/tag_embedding.rb
+  ../lib/ai_topic_summary/embeddings/embedding_process.rb
+  ../lib/ai_topic_summary/embeddings/tag_embedding_process.rb
+  ../lib/ai_topic_summary/embeddings/embedding_completionist_process.rb
   ../lib/ai_topic_summary/summarise.rb
   ../app/controllers/ai_topic_summary/vote.rb
   ../app/controllers/ai_topic_summary/ai_summary.rb
   ../app/jobs/regular/ai_topic_summary_summarise_topic.rb
+  ../app/jobs/regular/ai_topic_summary_tag_embedding.rb
+  ../app/jobs/scheduled/ai_topic_summary_embeddings_set_completer.rb
   ../config/routes.rb
   ].each do |path|
     load File.expand_path(path, __FILE__)

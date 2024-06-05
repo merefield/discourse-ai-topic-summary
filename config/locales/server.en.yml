@@ -23,6 +23,13 @@ en:
     ai_topic_summary_rely_on_sidebar_widget_instead: "Turn off summary at top of Topic and use Bars Theme Component instead to present the summary on a sidebar (requires installing and configuring <a target='_blank' rel='noopener' href='https://github.com/merefield/discourse-tc-bars'>Bars</a>)"
     ai_topic_summary_enable_auto_tagging: 'Enable automated tagging of topics (NB It will replace not append!)'
     ai_topic_summary_auto_tagging_username: 'Username used for auto-adding tags.  System User is used if blank, which will allow the AI to create new tags.  This is rarely desirable as they can be a bit free-form occasionally. This setting can help you block creation of new tags if chosen User does not have privileges to create new tags and will restrict it to existing tags only.  Governed by Trust Level setting min_trust_to_create_tag'
+    ai_topic_summary_auto_tagging_strategy: 'Choose between completion and embeddings for auto-tagging.  Embeddings strategy is currently experimental'
+    ai_topic_summary_auto_tagging_embeddings_enabled: 'Enable embeddings for auto-tagging'
+    ai_topic_summary_auto_tagging_embeddings_model: "Open AI Embeddings model used for auto-tagging.  Models are detailed at <a target='_blank' rel='noopener' href='https://platform.openai.com/docs/models/overview'>models overview on openai.com</a>"
+    ai_topic_summary_auto_tagging_embeddings_similarity_threshold: "Cosine similarity threshold for discovering appropriate tags.  The higher the threshold, the more similar the tags will be to the summary.  The lower the threshold, the more tags will be discovered, but they may be less relevant.  The threshold should be between 0 and 1."
+    ai_topic_summary_auto_tagging_open_ai_embeddings_char_limit: "Max number of characters sent to Open AI Embeddings model.  This is defaulted to approximately the OpenAI token limit, be careful!"
+    ai_topic_summary_verbose_console_logging: "Enable response retrieval progress logging to console to help debug issues"
+    ai_topic_summary_verbose_rails_logging: "Enable response retrieval progress logging to rails logs to help debug issues"
   ai_topic_summary:
     errors:
       general: "There was a problem, consult logs"
