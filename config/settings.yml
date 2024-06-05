@@ -87,6 +87,37 @@ plugins:
   ai_topic_summary_enable_auto_tagging:
     client: false
     default: false
+  ai_topic_summary_auto_tagging_strategy:
+    client: false
+    default: "completion"
+    type: enum
+    choices:
+      - completion
+      - embeddings
   ai_topic_summary_auto_tagging_username:
     client: false
     default: ""
+  ai_topic_summary_auto_tagging_embeddings_enabled:
+    client: false
+    default: false
+  ai_topic_summary_auto_tagging_embeddings_model:
+    client: false
+    type: enum
+    default: text-embedding-ada-002
+    choices:
+      - text-embedding-ada-002
+      - text-embedding-3-small
+  ai_topic_summary_auto_tagging_embeddings_similarity_threshold:
+    client: false
+    default: 0.8
+    min: 0
+    max: 1
+  ai_topic_summary_auto_tagging_open_ai_embeddings_char_limit:
+    client: false
+    default: 11500
+  ai_topic_summary_verbose_console_logging:
+    client: false
+    default: false
+  ai_topic_summary_verbose_rails_logging:
+    client: false
+    default: false
