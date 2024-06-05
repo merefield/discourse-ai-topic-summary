@@ -15,25 +15,30 @@ class ::AiTopicSummary::Summarise
   end
 
   def self.retrieve_tags(current_topic, summary)
-    tags_string = "['" + Tag.pluck(:name).join("', '") + "']"
-    query = I18n.t("ai_topic_summary.prompt.tag", tags: tags_string, summary: summary)
-    messages = nil
 
-    if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo", "gpt-4o"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
-      SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
-      messages = [{ "role": "system", "content": I18n.t("ai_topic_summary.prompt.system_tagging") }]
-      messages << { "role": "user", "content":  query }
+    if SiteSetting.ai_topic_summary_auto_tagging_strategy == "completion"
+      tags_string = "['" + Tag.pluck(:name).join("', '") + "']"
+      query = I18n.t("ai_topic_summary.prompt.tag", tags: tags_string, summary: summary)
+      messages = nil
+
+      if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo", "gpt-4o"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
+        SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
+        messages = [{ "role": "system", "content": I18n.t("ai_topic_summary.prompt.system_tagging") }]
+        messages << { "role": "user", "content":  query }
+      else
+        messages = query
+      end
+
+      tags_response = ::AiTopicSummary::CallBot.get_response(messages).strip.chomp('.')
+
+      tag_name_list = tags_response.split(",")
+      if SiteSetting.force_lowercase_tags
+        tag_name_list = tag_name_list.map { |string| string.downcase }
+      end
+      tag_name_list = tag_name_list.map { |string| string.strip.gsub(/[ .]/, "-") }
     else
-      messages = query
+      tag_name_list = ::AiTopicSummary::TagEmbeddingProcess.new.semantic_search(summary)
     end
-
-    tags_response = ::AiTopicSummary::CallBot.get_response(messages).strip.chomp('.')
-
-    tag_name_list = tags_response.split(",")
-    if SiteSetting.force_lowercase_tags
-      tag_name_list = tag_name_list.map { |string| string.downcase }
-    end
-    tag_name_list = tag_name_list.map { |string| string.strip.gsub(/[ .]/, "-") }
 
     if SiteSetting.ai_topic_summary_auto_tagging_username.blank?
       DiscourseTagging.tag_topic_by_names(current_topic, Guardian.new(Discourse.system_user), tag_name_list)
