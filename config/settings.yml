@@ -122,3 +122,10 @@ plugins:
   ai_topic_summary_verbose_rails_logging:
     client: false
     default: false
+  ai_topic_summary_verbose_rails_logging_destination_level:
+    client: false
+    default: "info"
+    type: enum
+    choices:
+      - info
+      - warn
