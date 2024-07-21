@@ -30,6 +30,7 @@ en:
     ai_topic_summary_auto_tagging_open_ai_embeddings_char_limit: "Max number of characters sent to Open AI Embeddings model.  This is defaulted to approximately the OpenAI token limit, be careful!"
     ai_topic_summary_verbose_console_logging: "Enable response retrieval progress logging to console to help debug issues"
     ai_topic_summary_verbose_rails_logging: "Enable response retrieval progress logging to rails logs to help debug issues"
+    ai_topic_summary_verbose_rails_logging_destination_level: "Set the log level for the response retrieval"
   ai_topic_summary:
     errors:
       general: "There was a problem, consult logs"
