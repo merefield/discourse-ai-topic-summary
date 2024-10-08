@@ -30,9 +30,10 @@ class ::AiTopicSummary::Summarise
     # Split the markdown into lines
     lines = markdown.lines
 
-    # Regular expression to match markdown image syntax or direct image URLs (jpg, jpeg, gif, png, webp)
-    # Including all query strings and fragments
-    image_or_link_regex = /!\[.*?\]\(https?:\/\/[^\s]+\.(jpg|jpeg|gif|png|webp)[^\s]*\)|https?:\/\/[^\s]+\.(jpg|jpeg|gif|png|webp)[^\s]*/i
+    # Regular expression to match:
+    # 1. Markdown image links, including "upload://" URLs and standard URLs with jpg, jpeg, gif, png, webp
+    # 2. Direct image URLs (jpg, jpeg, gif, png, webp) including query strings and fragments
+    image_or_link_regex = /!\[.*?\]\((https?:\/\/[^\s]+\.(jpg|jpeg|gif|png|webp)[^\s]*|upload:\/\/[^\s]+\.(jpg|jpeg|gif|png|webp))\)|https?:\/\/[^\s]+\.(jpg|jpeg|gif|png|webp)[^\s]*/i
 
     # Check if the first line contains a markdown image or a supported image link
     if lines[0] =~ image_or_link_regex
