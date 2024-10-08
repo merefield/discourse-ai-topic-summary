@@ -14,6 +14,7 @@ class ::AiTopicSummary::Summarise
       post = current_topic.first_post
       post.raw = thumbnail_url + "\n\n" + post.raw
       post.save!
+      post.rebake!
     end
 
     if SiteSetting.ai_topic_summary_enable_auto_tagging
