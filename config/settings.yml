@@ -79,6 +79,9 @@ plugins:
   ai_topic_summary_enable_topic_thumbnail:
     client: false
     default: false
+  ai_topic_summary_remove_prior_thumbnail:
+    client: false
+    default: true
   ai_topic_summary_enable_auto_tagging:
     client: false
     default: false
