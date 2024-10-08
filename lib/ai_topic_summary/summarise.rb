@@ -12,6 +12,10 @@ class ::AiTopicSummary::Summarise
     if SiteSetting.ai_topic_summary_enable_topic_thumbnail
       thumbnail_url = ::AiTopicSummary::CallBot.get_thumbnail(summary)
       post = current_topic.first_post
+      if SiteSetting.ai_topic_summary_remove_prior_thumbnail
+        post.raw = remove_image_from_first_line(post.raw)
+        post.save!
+      end
       post.raw = thumbnail_url + "\n\n" + post.raw
       post.save!
       post.rebake!
@@ -20,6 +24,27 @@ class ::AiTopicSummary::Summarise
     if SiteSetting.ai_topic_summary_enable_auto_tagging
       retrieve_tags(current_topic, summary)
     end
+  end
+
+  def self.remove_image_from_first_line(markdown)
+    # Split the markdown into lines
+    lines = markdown.lines
+
+    # Regular expression to match markdown image syntax or direct image URLs (jpg, jpeg, gif, png, webp)
+    # Including all query strings and fragments
+    image_or_link_regex = /!\[.*?\]\(https?:\/\/[^\s]+\.(jpg|jpeg|gif|png|webp)[^\s]*\)|https?:\/\/[^\s]+\.(jpg|jpeg|gif|png|webp)[^\s]*/i
+
+    # Check if the first line contains a markdown image or a supported image link
+    if lines[0] =~ image_or_link_regex
+      # Remove the image link or supported image URL (with all query strings and fragments) from the first line
+      lines[0].gsub!(image_or_link_regex, '')
+
+      # Clean up any leading or trailing whitespace or carriage returns/newlines
+      lines[0].strip!
+    end
+
+    # Join the lines back together and return the modified markdown, also strip any leading/trailing whitespace
+    lines.join.strip
   end
 
   def self.retrieve_tags(current_topic, summary)
