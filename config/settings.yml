@@ -11,13 +11,6 @@ plugins:
   ai_topic_summary_open_ai_model_custom_name:
     default: ''
     client: false
-  ai_topic_summary_open_ai_model_custom_type:
-    default: 'chat'
-    client: false
-    type: enum
-    choices:
-      - chat
-      - completions
   ai_topic_summary_open_ai_model:
     client: false
     type: enum
@@ -28,8 +21,6 @@ plugins:
       - gpt-4o-mini
       - gpt-4-turbo
       - gpt-4
-      - gpt-4-32k
-      - gpt-3.5-turbo-instruct
   ai_topic_summary_request_max_response_tokens:
     default: 200
     client: false
@@ -84,6 +75,9 @@ plugins:
     default: 1
   ai_topic_summary_rely_on_sidebar_widget_instead:
     client: true
+    default: false
+  ai_topic_summary_enable_topic_thumbnail:
+    client: false
     default: false
   ai_topic_summary_enable_auto_tagging:
     client: false
