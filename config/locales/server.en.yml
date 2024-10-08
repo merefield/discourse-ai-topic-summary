@@ -4,7 +4,6 @@ en:
     ai_topic_summary_open_ai_token: "Your Open AI token.  You can get one at <a target='_blank' rel='noopener' href='https://platform.openai.com/account/api-keys/'>openai.com</a>"
     ai_topic_summary_open_ai_model_custom: "Use Custom model name (ADVANCED USERS ONLY)"
     ai_topic_summary_open_ai_model_custom_name: "(CUSTOM ONLY) Name of model"
-    ai_topic_summary_open_ai_model_custom_type: "(CUSTOM ONLY) IMPORTANT: Select which type of Open AI endpoint should be used, Chat (ChatGPT style), or Completion (Davinci style) - will break if you select wrong type"
     ai_topic_summary_open_ai_model: "(UNLESS CUSTOM) The model to be accessed.  Models are detailed at <a target='_blank' rel='noopener' href='https://platform.openai.com/docs/models/overview'>models overview on openai.com</a>"
     ai_topic_summary_request_max_response_tokens:  "Specify the maximum amount of tokens bot will use to generate a response. Refer to: <a target='_blank' rel='noopener' href='https://openai.com/pricing'>OpenAI: Pricing</a>"
     ai_topic_summary_request_temperature: "Numeric value within the range of 0 to 100 to determine the level of randomization for AI responses. Higher temp = more creative, lower temp = more conservative. Refer to: <a target='_blank' rel='noopener' href='https://platform.openai.com/docs/api-reference/completions/create#completions/create-temperature/'>API docs: temperature</a>"
@@ -21,6 +20,7 @@ en:
     ai_topic_summary_permitted_categories: 'Which Categories are supported?'
     ai_topic_summary_downvote_refresh_threshold: 'Number of downvotes beyond which a new summary is requested.  Therefore, set to zero for no downvote tolerance'
     ai_topic_summary_rely_on_sidebar_widget_instead: "Turn off summary at top of Topic and use Bars Theme Component instead to present the summary on a sidebar (requires installing and configuring <a target='_blank' rel='noopener' href='https://github.com/merefield/discourse-tc-bars'>Bars</a>)"
+    ai_topic_summary_enable_topic_thumbnail: "EXPERIMENTAL: Enable automated topic thumbnail generation based on summary of Topic.  Maintain associated prompt at <a target='_blank' rel='noopener' href='/admin/customize/site_texts?q=ai_topic_summary.prompt.thumbnail'>Customize Text</a>"
     ai_topic_summary_enable_auto_tagging: 'Enable automated tagging of topics (NB It will replace not append!)'
     ai_topic_summary_auto_tagging_username: 'Username used for auto-adding tags.  System User is used if blank, which will allow the AI to create new tags.  This is rarely desirable as they can be a bit free-form occasionally. This setting can help you block creation of new tags if chosen User does not have privileges to create new tags and will restrict it to existing tags only.  Governed by Trust Level setting min_trust_to_create_tag'
     ai_topic_summary_auto_tagging_strategy: 'Choose between completion and embeddings for auto-tagging.  Embeddings strategy is currently experimental'
@@ -41,4 +41,5 @@ en:
       post: "%{username} said %{raw}\n---\n"
       summarise: "Please summarise the following text in a maximum of three sentences: '%{full_raw}'"
       summarise_chat: "Please summarise all the preceeding text in a maximum of three sentences"
+      thumbnail: "Make a pencil sketch out of the following text: '%{prompt}'"
       tag: "Given this set of tags %{tags} recommend up to five of them that are most appropriate for this summary?: '%{summary}'.  Strictly respond by only listing the tags, separated by commas."

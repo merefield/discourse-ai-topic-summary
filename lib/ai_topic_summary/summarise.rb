@@ -9,6 +9,13 @@ class ::AiTopicSummary::Summarise
     current_topic.custom_fields["ai_summary"] = {"text": summary, "post_count":current_topic.posts_count, "downvoted": []}
     current_topic.save!
 
+    if SiteSetting.ai_topic_summary_enable_topic_thumbnail
+      thumbnail_url = ::AiTopicSummary::CallBot.get_thumbnail(summary)
+      post = current_topic.first_post
+      post.raw = thumbnail_url + "\n\n" + post.raw
+      post.save!
+    end
+
     if SiteSetting.ai_topic_summary_enable_auto_tagging
       retrieve_tags(current_topic, summary)
     end
