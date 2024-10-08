@@ -21,7 +21,6 @@ plugins:
       - gpt-4o-mini
       - gpt-4-turbo
       - gpt-4
-      - gpt-4-32k
   ai_topic_summary_request_max_response_tokens:
     default: 200
     client: false
