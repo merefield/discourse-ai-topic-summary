@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # name: discourse-ai-topic-summary
 # about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
-# version: 0.4.2
+# version: 0.5.0
 # authors: Robert Barrow
 # contact_emails: merefield@gmail.com
 # url: https://github.com/merefield/discourse-ai-topic-summary
@@ -39,6 +39,7 @@ after_initialize do
   ../app/jobs/regular/ai_topic_summary_summarise_topic.rb
   ../app/jobs/regular/ai_topic_summary_tag_embedding.rb
   ../app/jobs/scheduled/ai_topic_summary_embeddings_set_completer.rb
+  ../app/serializers/topic_list_item_edits.rb
   ../config/routes.rb
   ].each do |path|
     load File.expand_path(path, __FILE__)

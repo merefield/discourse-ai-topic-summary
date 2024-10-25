@@ -1,6 +1,7 @@
 en:
   site_settings:
     ai_topic_summary_enabled: 'Enable AI topic summaries'
+    ai_topic_summary_expose_as_excerpt: 'EXPERIMENTAL: Expose AI summary as excerpt on Topic Lists in favour of the first post'
     ai_topic_summary_open_ai_token: "Your Open AI token.  You can get one at <a target='_blank' rel='noopener' href='https://platform.openai.com/account/api-keys/'>openai.com</a>"
     ai_topic_summary_open_ai_model_custom: "Use Custom model name (ADVANCED USERS ONLY)"
     ai_topic_summary_open_ai_model_custom_name: "(CUSTOM ONLY) Name of model"

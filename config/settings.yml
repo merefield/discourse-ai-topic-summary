@@ -2,6 +2,9 @@ plugins:
   ai_topic_summary_enabled:
     default: true
     client: true
+  ai_topic_summary_expose_as_excerpt:
+    default: false
+    client: false
   ai_topic_summary_open_ai_token:
     default: ''
     client: false
