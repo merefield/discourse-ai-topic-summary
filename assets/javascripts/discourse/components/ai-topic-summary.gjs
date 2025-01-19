@@ -21,7 +21,7 @@ export default class AiTopicSummaryComponent extends Component {
     super(...arguments);
 
     this.topic_id = this.router.currentRoute.parent.params.id;
-    const topicAiSummaryDataPath = `/ai_topic_summary/ai_summary/${this.topic_id}.json`;
+    const topicAiSummaryDataPath = `/ai-topic-summary/ai_summary/${this.topic_id}.json`;
 
     ajax(topicAiSummaryDataPath).then((response) => {
       if (response.ai_summary !== null) {
@@ -53,7 +53,7 @@ export default class AiTopicSummaryComponent extends Component {
   downVote() {
     this.localDownVotes++;
     this.voted = true;
-    ajax("/ai_topic_summary/downvote", {
+    ajax("/ai-topic-summary/downvote", {
       type: "POST",
       data: {
         username: this.currentUser.username,
