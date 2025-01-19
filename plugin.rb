@@ -30,6 +30,9 @@ end
 require_relative "lib/ai_topic_summary/engine"
 
 after_initialize do
+  reloadable_patch do
+    TopicListItemSerializer.prepend(AiTopicSummary::TopicListItemSerializerExtension)
+  end
 
   Topic.register_custom_field_type('ai_summary', :json)
 
