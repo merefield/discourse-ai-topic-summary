@@ -32,7 +32,6 @@ module ::AiTopicSummary
       raise "Overwrite me!"
     end
 
-
     def semantic_search(query)
       raise "Overwrite me!"
     end

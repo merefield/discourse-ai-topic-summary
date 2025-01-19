@@ -54,7 +54,6 @@ module ::AiTopicSummary
       embedding_vector = response.dig("data", 0, "embedding")
     end
 
-
     def semantic_search(query)
       self.setup_api
 

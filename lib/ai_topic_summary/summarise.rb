@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 class ::AiTopicSummary::Summarise
-  
+
   def self.retrieve_and_post_summary(topic_id)
     data = self.get_markdown(topic_id)
     summary = ::AiTopicSummary::CallBot.get_response(data).strip
 
     current_topic = Topic.find(topic_id)
-    current_topic.custom_fields["ai_summary"] = {"text": summary, "post_count":current_topic.posts_count, "downvoted": []}
+    current_topic.custom_fields["ai_summary"] = { "text": summary, "post_count": current_topic.posts_count, "downvoted": [] }
     current_topic.save!
 
     if SiteSetting.ai_topic_summary_enable_topic_thumbnail
@@ -99,7 +99,7 @@ class ::AiTopicSummary::Summarise
       next if p.post_type > 1
       break if index > SiteSetting.ai_topic_summary_post_limit
       raw_post_contents = p.raw
-      raw_post_contents.gsub!(/\[quote.*?\](.*?)\[\/quote\]/m,'') if SiteSetting.ai_topic_summary_strip_quotes
+      raw_post_contents.gsub!(/\[quote.*?\](.*?)\[\/quote\]/m, '') if SiteSetting.ai_topic_summary_strip_quotes
 
       if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo", "gpt-4o", "gpt-4o-mini"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
         SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
@@ -109,13 +109,13 @@ class ::AiTopicSummary::Summarise
       end
     end
 
-    unless ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo", "gpt-4o", "gpt-4o-mini"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
+    if ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k", "gpt-4-turbo", "gpt-4o", "gpt-4o-mini"].include?(SiteSetting.ai_topic_summary_open_ai_model) ||
       SiteSetting.ai_topic_summary_open_ai_model_custom && SiteSetting.ai_topic_summary_open_ai_model_custom_type == "chat"
+      messages << { "role": "user", "content":  I18n.t("ai_topic_summary.prompt.summarise_chat") }
+    else
       result = content.join
       result = result[0..SiteSetting.ai_topic_summary_character_limit]
       result[0...result.rindex('.')] << "."
-    else
-      messages << { "role": "user", "content":  I18n.t("ai_topic_summary.prompt.summarise_chat")}
     end
   end
 end
