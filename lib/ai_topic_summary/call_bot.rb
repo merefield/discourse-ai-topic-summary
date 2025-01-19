@@ -12,10 +12,10 @@ class ::AiTopicSummary::CallBot
       f.response :logger, Logger.new($stdout), bodies: true if SiteSetting.ai_topic_summary_verbose_console_logging
       if SiteSetting.ai_topic_summary_verbose_rails_logging
         case SiteSetting.ai_topic_summary_verbose_rails_logging_destination_level
-          when "warn"
-            f.response :logger, Rails.logger, bodies: true, log_level: :warn
+        when "warn"
+          f.response :logger, Rails.logger, bodies: true, log_level: :warn
           else
-            f.response :logger, Rails.logger, bodies: true, log_level: :info
+          f.response :logger, Rails.logger, bodies: true, log_level: :info
         end
       end
     end
@@ -37,7 +37,7 @@ class ::AiTopicSummary::CallBot
       begin
         raise StandardError, response["error"]["message"]
       rescue => e
-        Rails.logger.error ("AI Topic Summary: There was a problem: #{e}")
+        Rails.logger.error("AI Topic Summary: There was a problem: #{e}")
         I18n.t('ai_topic_summary.errors.general')
       end
     else
@@ -58,10 +58,10 @@ class ::AiTopicSummary::CallBot
         f.response :logger, Logger.new($stdout), bodies: true if SiteSetting.ai_topic_summary_verbose_console_logging
         if SiteSetting.ai_topic_summary_verbose_rails_logging
           case SiteSetting.ai_topic_summary_verbose_rails_logging_destination_level
-            when "warn"
-              f.response :logger, Rails.logger, bodies: true, log_level: :warn
+          when "warn"
+            f.response :logger, Rails.logger, bodies: true, log_level: :warn
             else
-              f.response :logger, Rails.logger, bodies: true, log_level: :info
+            f.response :logger, Rails.logger, bodies: true, log_level: :info
           end
         end
       end
@@ -72,7 +72,7 @@ class ::AiTopicSummary::CallBot
         begin
           raise StandardError, response["error"]["message"]
         rescue => e
-          Rails.logger.error ("AI Topic Summary: There was a problem generating thumbnail: #{e}")
+          Rails.logger.error("AI Topic Summary: There was a problem generating thumbnail: #{e}")
           I18n.t('ai_topic_summary.errors.general')
         end
       else

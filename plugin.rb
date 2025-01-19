@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # name: discourse-ai-topic-summary
 # about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
-# version: 0.5.0
+# version: 0.5.1
 # authors: Robert Barrow
 # contact_emails: merefield@gmail.com
 # url: https://github.com/merefield/discourse-ai-topic-summary
@@ -17,6 +17,8 @@ enabled_site_setting :ai_topic_summary_enabled
 
 module ::AiTopicSummary
 
+  PLUGIN_NAME = "ai-topic-summary".freeze
+
   def progress_debug_message(message)
     puts "AI Topic Summary: #{message}" if SiteSetting.ai_topic_summary_verbose_console_logging
     Rails.logger.info("AI Topic Summary: #{message}") if SiteSetting.ai_topic_summary_verbose_rails_logging
@@ -25,35 +27,22 @@ module ::AiTopicSummary
   module_function :progress_debug_message
 end
 
+require_relative "lib/ai_topic_summary/engine"
+
 after_initialize do
-  %w[
-  ../lib/ai_topic_summary/engine.rb
-  ../lib/ai_topic_summary/call_bot.rb
-  ../app/models/ai_topic_summary/tag_embedding.rb
-  ../lib/ai_topic_summary/embeddings/embedding_process.rb
-  ../lib/ai_topic_summary/embeddings/tag_embedding_process.rb
-  ../lib/ai_topic_summary/embeddings/embedding_completionist_process.rb
-  ../lib/ai_topic_summary/summarise.rb
-  ../app/controllers/ai_topic_summary/vote.rb
-  ../app/controllers/ai_topic_summary/ai_summary.rb
-  ../app/jobs/regular/ai_topic_summary_summarise_topic.rb
-  ../app/jobs/regular/ai_topic_summary_tag_embedding.rb
-  ../app/jobs/scheduled/ai_topic_summary_embeddings_set_completer.rb
-  ../app/serializers/topic_list_item_edits.rb
-  ../config/routes.rb
-  ].each do |path|
-    load File.expand_path(path, __FILE__)
+  reloadable_patch do
+    TopicListItemSerializer.prepend(AiTopicSummary::TopicListItemSerializerExtension)
   end
 
   Topic.register_custom_field_type('ai_summary', :json)
 
   add_to_class(:topic, :ai_summary) { self.custom_fields['ai_summary'] }
 
-  add_to_serializer(:topic_view, :ai_summary, respect_plugin_enabled: true ) { object.topic.ai_summary }
+  add_to_serializer(:topic_view, :ai_summary, respect_plugin_enabled: true) { object.topic.ai_summary }
 
   add_preloaded_topic_list_custom_field("ai_summary")
 
-  DiscourseEvent.on(:post_created) do |*params|
+  on(:post_created) do |*params|
     post, opts, user = params
 
     if SiteSetting.ai_topic_summary_enabled
@@ -61,7 +50,7 @@ after_initialize do
 
       posts_count = post.topic.posts_count
 
-      skip = true if posts_count <= SiteSetting.ai_topic_summary_enabled_min_posts 
+      skip = true if posts_count <= SiteSetting.ai_topic_summary_enabled_min_posts
 
       is_private_msg = post.topic.private_message?
 
@@ -77,7 +66,7 @@ after_initialize do
          !post.topic.ai_summary["post_count"].nil? &&
           posts_count >= post.topic.ai_summary["post_count"] + SiteSetting.ai_topic_summary_enabled_post_interval_rerun &&
           posts_count <= SiteSetting.ai_topic_summary_post_limit))
-          Jobs.enqueue(:ai_topic_summary_summarise_topic, topic_id: post.topic.id)
+        Jobs.enqueue(:ai_topic_summary_summarise_topic, topic_id: post.topic.id)
       end
     end
   end

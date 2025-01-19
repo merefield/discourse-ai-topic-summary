@@ -2,6 +2,7 @@
 
 module ::AiTopicSummary
   class VoteController < ApplicationController
+    requires_plugin PLUGIN_NAME
     before_action :ensure_logged_in
 
     def downvote

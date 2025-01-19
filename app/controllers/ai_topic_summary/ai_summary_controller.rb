@@ -1,5 +1,7 @@
+# frozen_string_literal: true
 module ::AiTopicSummary
   class AiSummaryController < ::ApplicationController
+    requires_plugin PLUGIN_NAME
 
     def index
       topic = Topic.find_by(id: params[:id])
