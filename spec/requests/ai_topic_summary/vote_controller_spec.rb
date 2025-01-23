@@ -18,7 +18,7 @@ describe AiTopicSummary::VoteController do
       expect do
         post "/ai-topic-summary/downvote/#{topic.id}.json"
       end.to change { Jobs::AiTopicSummarySummariseTopic.jobs.size }.by(1) & change { topic.reload.custom_fields["ai_summary"]["downvoted"].length }.by(-1)
-    
+
       expect(response.status).to eq(200)
     end
   end

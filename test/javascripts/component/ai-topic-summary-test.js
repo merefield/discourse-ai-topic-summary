@@ -30,7 +30,6 @@ module("ai-topic-summary | Component | ai-topic-summary", function (hooks) {
         admin: false,
       },
     });
-    debugger;
 
     await render(hbs`<AiTopicSummary
       @text={{this.model.ai_summary.text}}
