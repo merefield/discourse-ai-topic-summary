@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# name: ai-topic-summary
+# name: discourse-ai-topic-summary
 # about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
 # version: 0.5.3
 # authors: Robert Barrow
@@ -17,7 +17,7 @@ enabled_site_setting :ai_topic_summary_enabled
 
 module ::AiTopicSummary
 
-  PLUGIN_NAME = "ai-topic-summary".freeze
+  PLUGIN_NAME = "discourse-ai-topic-summary".freeze
 
   def progress_debug_message(message)
     puts "AI Topic Summary: #{message}" if SiteSetting.ai_topic_summary_verbose_console_logging

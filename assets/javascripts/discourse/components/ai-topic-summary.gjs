@@ -23,7 +23,7 @@ export default class AiTopicSummaryComponent extends Component {
     // necessary to support the two modes of operation e.g. in Bars! or attached to Topic plugin outlet.
     this.topic_id =
       this.args.topic_id || this.router.currentRoute.parent.params.id;
-    const topicAiSummaryDataPath = `/ai-topic-summary/ai_summary/${this.topic_id}.json`;
+    const topicAiSummaryDataPath = `/ai-topic-summary/${this.topic_id}.json`;
 
     if (!this.args.text && !this.args.downVotes) {
       ajax(topicAiSummaryDataPath).then((response) => {
@@ -63,12 +63,8 @@ export default class AiTopicSummaryComponent extends Component {
 
   @action
   downVote() {
-    ajax("/ai-topic-summary/downvote", {
+    ajax(`/ai-topic-summary/downvote/${this.topic_id}.json`, {
       type: "POST",
-      data: {
-        username: this.currentUser.username,
-        topic_id: this.args.topic_id,
-      },
       returnXHR: true,
     })
       .then(() => {
