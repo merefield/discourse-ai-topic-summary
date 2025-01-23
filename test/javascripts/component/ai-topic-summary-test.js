@@ -8,7 +8,7 @@ module("ai-topic-summary | Component | ai-topic-summary", function (hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function () {
-    pretender.post("/ai-topic-summary/downvote", () => {
+    pretender.post("/ai-topic-summary/downvote/23.json", () => {
       return response({
         result: "success",
       });
