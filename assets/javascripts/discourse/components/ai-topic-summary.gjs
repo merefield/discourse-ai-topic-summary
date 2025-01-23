@@ -12,23 +12,35 @@ export default class AiTopicSummaryComponent extends Component {
   @service currentUser;
   @service router;
   @tracked localDownVotes;
-  @tracked downVotes;
   @tracked text;
-  @tracked topic_id;
   @tracked voted;
+  downVotes = [];
+  topic_id = null;
 
   constructor() {
     super(...arguments);
 
-    this.topic_id = this.router.currentRoute.parent.params.id;
-    const topicAiSummaryDataPath = `/ai-topic-summary/ai_summary/${this.topic_id}.json`;
+    // necessary to support the two modes of operation e.g. in Bars! or attached to Topic plugin outlet.
+    this.topic_id =
+      this.args.topic_id || this.router.currentRoute.parent.params.id;
+    const topicAiSummaryDataPath = `/ai-topic-summary/${this.topic_id}.json`;
 
-    ajax(topicAiSummaryDataPath).then((response) => {
-      if (response.ai_summary !== null) {
-        this.text = response.ai_summary.text;
-        this.downVotes = response.ai_summary.downvoted;
-      }
-    });
+    if (!this.args.text && !this.args.downVotes) {
+      ajax(topicAiSummaryDataPath).then((response) => {
+        if (response.ai_summary !== null) {
+          this.text = response.ai_summary.text;
+          this.downVotes = response.ai_summary.downvoted;
+        }
+        this.setupDownVotes();
+      });
+    } else {
+      this.text = this.args.text;
+      this.downVotes = this.args.downVotes;
+      this.setupDownVotes();
+    }
+  }
+
+  setupDownVotes() {
     this.localDownVotes =
       typeof this.downVotes !== "undefined" ? this.downVotes.length || 0 : 0;
     if (this.currentUser) {
@@ -51,18 +63,17 @@ export default class AiTopicSummaryComponent extends Component {
 
   @action
   downVote() {
-    this.localDownVotes++;
-    this.voted = true;
-    ajax("/ai-topic-summary/downvote", {
+    ajax(`/ai-topic-summary/downvote/${this.topic_id}.json`, {
       type: "POST",
-      data: {
-        username: this.currentUser.username,
-        topic_id: this.topic_id,
-      },
       returnXHR: true,
-    }).catch(function (error) {
-      popupAjaxError(error);
-    });
+    })
+      .then(() => {
+        this.localDownVotes++;
+        this.voted = true;
+      })
+      .catch(function (error) {
+        popupAjaxError(error);
+      });
   }
 
   <template>
