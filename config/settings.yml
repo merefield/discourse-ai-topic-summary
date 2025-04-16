@@ -17,9 +17,11 @@ plugins:
   ai_topic_summary_open_ai_model:
     client: false
     type: enum
-    default: gpt-4o-mini
+    default: gpt-4.1-mini
     choices:
-      - gpt-3.5-turbo
+      - gpt-4.1
+      - gpt-4.1-mini
+      - gpt-4.1-nano
       - gpt-4o
       - gpt-4o-mini
       - gpt-4-turbo
