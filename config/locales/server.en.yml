@@ -21,6 +21,7 @@ en:
     ai_topic_summary_permitted_categories: 'Which Categories are supported?'
     ai_topic_summary_downvote_refresh_threshold: 'Number of downvotes beyond which a new summary is requested.  Therefore, set to zero for no downvote tolerance'
     ai_topic_summary_rely_on_sidebar_widget_instead: "Turn off summary at top of Topic and use Bars Theme Component instead to present the summary on a sidebar (requires installing and configuring <a target='_blank' rel='noopener' href='https://github.com/merefield/discourse-tc-bars'>Bars</a>)"
+    ai_topic_summary_enable_description_replacement_with_ai_summary: "EXPERIMENTAL: Replace first post excerpt in Topic meta with AI summary so latter will appear in shared links."
     ai_topic_summary_enable_topic_thumbnail: "EXPERIMENTAL: Enable automated topic thumbnail generation based on summary of Topic.  Maintain associated prompt at <a target='_blank' rel='noopener' href='/admin/customize/site_texts?q=ai_topic_summary.prompt.thumbnail'>Customize Text</a>"
     ai_topic_summary_remove_prior_thumbnail: "EXPERIMENTAL: Remove prior thumbnail when a new one is generated"
     ai_topic_summary_enable_auto_tagging: 'Enable automated tagging of topics (NB It will replace not append!)'

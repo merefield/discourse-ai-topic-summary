@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # name: discourse-ai-topic-summary
 # about: Uses a remote (OpenAI) AI language model to prepare and post a summary of a Topic
-# version: 0.5.6
+# version: 0.5.7
 # authors: Robert Barrow
 # contact_emails: merefield@gmail.com
 # url: https://github.com/merefield/discourse-ai-topic-summary
@@ -32,6 +32,7 @@ require_relative "lib/ai_topic_summary/engine"
 after_initialize do
   reloadable_patch do
     TopicListItemSerializer.prepend(AiTopicSummary::TopicListItemSerializerExtension)
+    TopicView.prepend(AiTopicSummary::TopicViewExtension)
   end
 
   Topic.register_custom_field_type('ai_summary', :json)
