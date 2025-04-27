@@ -11,7 +11,7 @@ RSpec.describe TopicView do
   fab!(:first_poster) { topic.user }
   fab!(:anonymous)
   let(:topic_view) { TopicView.new(topic.id, evil_trout) }
- 
+
   context "with a few sample posts" do
     fab!(:p1) { Fabricate(:post, topic: topic, user: first_poster, percent_rank: 1) }
     fab!(:p2) { Fabricate(:post, topic: topic, user: evil_trout, percent_rank: 0.5) }
