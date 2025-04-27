@@ -81,6 +81,9 @@ plugins:
   ai_topic_summary_rely_on_sidebar_widget_instead:
     client: true
     default: false
+  ai_topic_summary_enable_description_replacement_with_ai_summary:
+    client: false
+    default: false
   ai_topic_summary_enable_topic_thumbnail:
     client: false
     default: false
