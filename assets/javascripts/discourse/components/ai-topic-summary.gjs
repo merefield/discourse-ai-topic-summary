@@ -92,7 +92,7 @@ export default class AiTopicSummaryComponent extends Component {
               @icon="thumbs-down"
               @title="ai_topic_summary.downvote"
               @disabled={{this.voted}}
-              @action={{action this.downVote}}
+              @action={{this.downVote}}
             /><span
               class="ai-summary-downvote-count"
             >{{this.localDownVotes}}</span>
