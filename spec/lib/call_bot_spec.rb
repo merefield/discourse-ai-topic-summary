@@ -40,10 +40,12 @@ RSpec.describe AiTopicSummary::CallBot do
 
         expect(image_client).to have_received(:generate).with(
           hash_including(
-            prompt: expected_prompt,
-            model: model_name,
-            size: expected_size,
-            quality: expected_quality,
+            parameters: hash_including(
+              prompt: expected_prompt,
+              model: model_name,
+              size: expected_size,
+              quality: expected_quality,
+            )
           )
         )
       end
