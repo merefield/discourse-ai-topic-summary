@@ -38,16 +38,15 @@ RSpec.describe AiTopicSummary::CallBot do
 
         described_class.get_thumbnail(prompt)
 
-        expect(image_client).to have_received(:generate).with(
-          hash_including(
-            parameters: hash_including(
-              prompt: expected_prompt,
-              model: model_name,
-              size: expected_size,
-              quality: expected_quality,
-            )
+        expect(image_client).to have_received(:generate) do |actual_args|
+          parameters = (actual_args[:parameters] || actual_args["parameters"])
+          expect(parameters.with_indifferent_access).to include(
+            model: model_name,
+            prompt: expected_prompt,
+            size: expected_size,
+            quality: expected_quality,
           )
-        )
+        end
       end
     end
   end
