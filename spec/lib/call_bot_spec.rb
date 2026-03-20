@@ -2,10 +2,20 @@
 
 require_relative "../plugin_helper"
 
+class FakeOpenAIImages
+  def generate(*)
+  end
+end
+
+class FakeOpenAIClient
+  def images
+  end
+end
+
 RSpec.describe AiTopicSummary::CallBot do
   describe ".get_thumbnail" do
-    let(:image_client) { double("OpenAI::Images") }
-    let(:openai_client) { double("OpenAI::Client", images: image_client) }
+    let(:image_client) { instance_double(FakeOpenAIImages, generate: nil) }
+    let(:openai_client) { instance_double(FakeOpenAIClient, images: image_client) }
 
     before do
       SiteSetting.ai_topic_summary_open_ai_token = "token"
