@@ -48,6 +48,15 @@ class ::AiTopicSummary::CallBot
   def self.get_thumbnail(prompt)
     begin
       description = I18n.t('ai_topic_summary.prompt.thumbnail', prompt: prompt)
+      thumbnail_model = SiteSetting.ai_topic_summary_support_picture_creation_model.presence || "dall-e-3"
+      image_size = if thumbnail_model.start_with?("gpt-image-")
+        "1536x1024"
+      elsif thumbnail_model == "dall-e-3"
+        "1792x1024"
+      else
+        "1024x1024"
+      end
+      image_quality = thumbnail_model == "dall-e-3" ? "standard" : "auto"
 
       ::OpenAI.configure do |config|
         config.access_token = SiteSetting.ai_topic_summary_open_ai_token
@@ -66,7 +75,12 @@ class ::AiTopicSummary::CallBot
         end
       end
 
-      response = client.images.generate(parameters: { prompt: description, model: "dall-e-3", size: "1792x1024", quality: "standard" })
+      response = client.images.generate(parameters: {
+        prompt: description,
+        model: thumbnail_model,
+        size: image_size,
+        quality: image_quality,
+      })
 
       if response["error"]
         begin

@@ -9,7 +9,7 @@ module ::AiTopicSummary
       ::OpenAI.configure do |config|
         config.access_token = SiteSetting.ai_topic_summary_open_ai_token
       end
-      if !SiteSetting.chatbot_open_ai_embeddings_model_custom_url.blank?
+      if SiteSetting.chatbot_open_ai_embeddings_model_custom_url.present?
         ::OpenAI.configure do |config|
           config.uri_base = SiteSetting.chatbot_open_ai_embeddings_model_custom_url
         end
